@@ -1,6 +1,6 @@
 # AspireMatch
 
-![A brain with a leaf in the middle, colored green. Below is the text Aspire Match](assets/logo.png)
+![A brain with a leaf in the middle, colored green. Below is the text Aspire Match](https://github.com/kevinl95/AspireMatch/blob/main/assets/logo.png?raw=true)
 
 [![Lint CloudFormation Templates](https://github.com/kevinl95/AspireMatch/actions/workflows/main.yml/badge.svg)](https://github.com/kevinl95/AspireMatch/actions/workflows/main.yml)
 
