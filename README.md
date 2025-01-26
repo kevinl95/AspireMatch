@@ -2,6 +2,8 @@
 
 ![A brain with a leaf in the middle, colored green. Below is the text Aspire Match](assets/logo.png)
 
+[![Lint CloudFormation Templates](https://github.com/kevinl95/AspireMatch/actions/workflows/main.yml/badge.svg)](https://github.com/kevinl95/AspireMatch/actions/workflows/main.yml)
+
 [AspireMatch](https://agent.ai/profile/dozf61ogwr83iefi) is the backend service for an agent on [Agent.ai](https://agent.ai/) that matches organizations with grants from [Grants.gov](https://grants.gov/) based on their websites or textual descriptions.
 
 ## Overview
