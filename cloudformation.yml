@@ -139,6 +139,7 @@ Resources:
                           grantor_contact_text = elem.find('ns:GrantorContactText', namespace)
                           grantor_contact_email_desc = elem.find('ns:GrantorContactEmailDescription', namespace)
                           grantor_contact_email = elem.find('ns:GrantorContactEmail', namespace)
+                          additional_info_url = elem.find('ns:AdditionalInformationURL', namespace)
                           # Check if FundingInstrumentType equals "GA"
                           if funding_instrument_type is not None and funding_instrument_type.text == "G":
                               # Extract details into a dictionary
@@ -148,6 +149,7 @@ Resources:
                                   "Grantor Contact Text": grantor_contact_text.text if grantor_contact_text is not None else "N/A",
                                   "Grantor Contact Email Description": grantor_contact_email_desc.text if grantor_contact_email_desc is not None else "N/A",
                                   "Grantor Contact Email": grantor_contact_email.text if grantor_contact_email is not None else "N/A",
+                                  "Additional Information URL": additional_info_url.text if additional_info_url is not None else "N/A",
                               }
 
                               # Check if the close date is valid and in the future

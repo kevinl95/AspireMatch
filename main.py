@@ -37,10 +37,24 @@ def lambda_handler(event, context):
             if e.response['Error']['Code'] != '404':
                 raise
 
-        with urllib.request.urlopen(url) as response:
-            if response.status != 200:
-                raise Exception(f"Failed to download file: HTTP {response.status}")
-            zip_data = response.read()
+        try:
+            with urllib.request.urlopen(url) as response:
+                if response.status != 200:
+                    raise Exception(f"Failed to download file: HTTP {response.status}")
+                zip_data = response.read()
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                # Try yesterday's file
+                yesterday_str = (datetime.now(eastern) - timedelta(days=1)).strftime("%Y%m%d")
+                file_name = f"GrantsDBExtract{yesterday_str}v2.zip"
+                xml_file_name = f"GrantsDBExtract{yesterday_str}v2.xml"
+                url = f"https://prod-grants-gov-chatbot.s3.amazonaws.com/extracts/{file_name}"
+                with urllib.request.urlopen(url) as response:
+                    if response.status != 200:
+                        raise Exception(f"Failed to download file: HTTP {response.status}")
+                    zip_data = response.read()
+            else:
+                raise
 
         with zipfile.ZipFile(io.BytesIO(zip_data)) as z:
             if xml_file_name not in z.namelist():
@@ -60,6 +74,7 @@ def lambda_handler(event, context):
                 grantor_contact_text = elem.find('ns:GrantorContactText', namespace)
                 grantor_contact_email_desc = elem.find('ns:GrantorContactEmailDescription', namespace)
                 grantor_contact_email = elem.find('ns:GrantorContactEmail', namespace)
+                additional_info_url = elem.find('ns:AdditionalInformationURL', namespace)
                 # Check if FundingInstrumentType equals "GA"
                 if funding_instrument_type is not None and funding_instrument_type.text == "G":
                     # Extract details into a dictionary
@@ -69,6 +84,7 @@ def lambda_handler(event, context):
                         "Grantor Contact Text": grantor_contact_text.text if grantor_contact_text is not None else "N/A",
                         "Grantor Contact Email Description": grantor_contact_email_desc.text if grantor_contact_email_desc is not None else "N/A",
                         "Grantor Contact Email": grantor_contact_email.text if grantor_contact_email is not None else "N/A",
+                        "Additional Information URL": additional_info_url.text if additional_info_url is not None else "N/A",
                     }
 
                     # Check if the close date is valid and in the future
