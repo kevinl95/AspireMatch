@@ -71,9 +71,6 @@ def lambda_handler(event, context):
                 description = elem.find('ns:Description', namespace)
                 close_date = elem.find('ns:CloseDate', namespace)
                 funding_instrument_type = elem.find('ns:FundingInstrumentType', namespace)
-                grantor_contact_text = elem.find('ns:GrantorContactText', namespace)
-                grantor_contact_email_desc = elem.find('ns:GrantorContactEmailDescription', namespace)
-                grantor_contact_email = elem.find('ns:GrantorContactEmail', namespace)
                 additional_info_url = elem.find('ns:AdditionalInformationURL', namespace)
                 # Check if FundingInstrumentType equals "GA"
                 if funding_instrument_type is not None and funding_instrument_type.text == "G":
@@ -81,9 +78,6 @@ def lambda_handler(event, context):
                     extracted_data = {
                         "Description": description.text if description is not None else "N/A",
                         "Close Date": close_date.text if close_date is not None else "N/A",
-                        "Grantor Contact Text": grantor_contact_text.text if grantor_contact_text is not None else "N/A",
-                        "Grantor Contact Email Description": grantor_contact_email_desc.text if grantor_contact_email_desc is not None else "N/A",
-                        "Grantor Contact Email": grantor_contact_email.text if grantor_contact_email is not None else "N/A",
                         "Additional Information URL": additional_info_url.text if additional_info_url is not None else "N/A",
                     }
 
